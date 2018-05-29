@@ -1,0 +1,20 @@
+{
+  "name": "adeelnawaz/polr-api-client",
+  "description": "PHP Rest API client for Polr Project",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Muhammad Adeel Nawaz",
+      "email": "m.adeelnawaz147@gmail.com"
+    }
+  ],
+  "require": {
+    "jms/serializer": "~1.11"
+  },
+  "autoload": {
+    "psr-4": {
+      "Adeelnawaz\\PolrApiClient\\": "src/"
+    }
+  }
+}
