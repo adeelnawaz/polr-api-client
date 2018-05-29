@@ -50,6 +50,7 @@ class PolrAPI
      * @param string $url the Polr API URL
      * @param string $key the Polr API secret key
      * @param int $quota the request/minute quota
+     * @param Serializer $serializer
      */
     public function __construct(string $url, string $key, int $quota, Serializer $serializer)
     {
