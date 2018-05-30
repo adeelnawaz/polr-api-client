@@ -9,9 +9,13 @@ use Adeelnawaz\PolrApiClient\EventSubscriber\LinkDeserealizeSubscriber;
 
 error_reporting(E_ALL);
 
+// Register composer spl autoload
 $autoloader = require __DIR__ . '/../vendor/autoload.php';
+
+// Register doctrine annotation autoload for JMS to work properly
 \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($autoloader, "loadClass"));
 
+// Build JMS Serializer
 $serializer = JMS\Serializer\SerializerBuilder::create()
     // Note: in order to use lookupLink API, this subscriber must be added
     ->configureListeners(function (JMS\Serializer\EventDispatcher\EventDispatcher $dispatcher) {
@@ -19,6 +23,7 @@ $serializer = JMS\Serializer\SerializerBuilder::create()
     })
     ->build();
 
+// Instantiate PolrAPI object
 $api = new PolrAPI(
     POLR_API_URL,
     POLR_API_KEY,
