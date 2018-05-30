@@ -4,7 +4,7 @@ define('POLR_API_URL', 'http://polr-api.test');     // Put your Polr API URL her
 define('POLR_API_KEY', 'polr-api-key-test');        // Put your Polr API key here
 define('POLR_API_QUOTA', 60);                       // Put your Polr API quota here
 
-use Adeelnawaz\PolrApiClient\PolrAPI;
+use Adeelnawaz\PolrApiClient\PolrApi;
 use Adeelnawaz\PolrApiClient\EventSubscriber\LinkDeserealizeSubscriber;
 
 error_reporting(E_ALL);
@@ -23,8 +23,8 @@ $serializer = JMS\Serializer\SerializerBuilder::create()
     })
     ->build();
 
-// Instantiate PolrAPI object
-$api = new PolrAPI(
+// Instantiate PolrApi object
+$api = new PolrApi(
     POLR_API_URL,
     POLR_API_KEY,
     POLR_API_QUOTA,

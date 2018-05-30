@@ -13,7 +13,7 @@ use JMS\Serializer\Serializer;
  * Class CoreAPI
  * @package Adeelnawaz\PolrApiClient
  */
-class PolrAPI
+class PolrApi
 {
     const ENDPOINT_ACTION_SHORTEN = '/api/v2/action/shorten';
     const ENDPOINT_ACTION_SHORTEN_BULK = '/api/v2/action/shorten_bulk';
@@ -46,7 +46,7 @@ class PolrAPI
     private $serializer;
 
     /**
-     * PolrAPI constructor.
+     * PolrApi constructor.
      * @param string $url the Polr API URL
      * @param string $key the Polr API secret key
      * @param int $quota the request/minute quota

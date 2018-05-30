@@ -18,7 +18,7 @@ Usage
 -----
 _(see `examples/` directory for PHP example code for each API method)_
 
-In order to use the API, instantiate an object of `PolrAPI`. Upon instantiation
+In order to use the API, instantiate an object of `PolrApi`. Upon instantiation
 of the object, the following have to be provided:
 - the URL to the API
 - the secret key of the user
@@ -51,8 +51,8 @@ $serializer = \JMS\Serializer\SerializerBuilder::create()
     })
     ->build();
 
-// Instantiate PolrAPI object
-$api = new \Adeelnawaz\PolrApiClient\PolrAPI(
+// Instantiate PolrApi object
+$api = new \Adeelnawaz\PolrApiClient\PolrApi(
     "POLR_API_URL",
     "POLR_API_KEY",
     "POLR_API_QUOTA",
