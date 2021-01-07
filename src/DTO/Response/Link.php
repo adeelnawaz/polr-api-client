@@ -2,31 +2,32 @@
 
 namespace Adeelnawaz\PolrApiClient\DTO\Response;
 
-use JMS\Serializer\Annotation as Serializer;
+use DateTime;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 class Link
 {
     /**
      * @var string
-     * @Serializer\Type("string")
+     * @Groups("Default")
      */
     private $longUrl;
 
     /**
      * @var string
-     * @Serializer\Type("string")
+     * @Groups("Default")
      */
     private $shortUrl;
 
     /**
-     * @var DateTime
-     * @Serializer\Type("DateTime")
+     * @var DateTime|null
+     * @Groups("Default")
      */
     private $createdAt;
 
     /**
      * @var int
-     * @Serializer\Type("int")
+     * @Groups("Default")
      */
     private $clicks;
 
@@ -68,7 +69,7 @@ class Link
     }
 
     /**
-     * @return array
+     * @return DateTime
      */
     public function getCreatedAt()
     {
@@ -76,7 +77,7 @@ class Link
     }
 
     /**
-     * @param \DateTime|array $createdAt
+     * @param DateTime $createdAt
      * @return Link
      */
     public function setCreatedAt($createdAt)

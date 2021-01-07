@@ -4,8 +4,14 @@ namespace Adeelnawaz\PolrApiClient;
 
 use Adeelnawaz\PolrApiClient\DTO;
 use Adeelnawaz\PolrApiClient\Exception\ApiResponseException;
+use Adeelnawaz\PolrApiClient\Normalizer\PolrNormalizer;
 use Adeelnawaz\PolrApiClient\Service\Curl;
-use JMS\Serializer\Serializer;
+use Symfony\Component\Serializer\Serializer;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 
 /**
  * This abstract class is responsible for holding global configurations and managing commonly used features.
@@ -50,14 +56,13 @@ class PolrApi
      * @param string $url the Polr API URL
      * @param string $key the Polr API secret key
      * @param int $quota the request/minute quota
-     * @param Serializer $serializer
      */
-    public function __construct(string $url, string $key, int $quota, Serializer $serializer)
+    public function __construct(string $url, string $key, int $quota)
     {
         $this->url = $url;
         $this->key = $key;
         $this->setTimeDelayByQuota($quota);
-        $this->serializer = $serializer;
+        $this->initSerializer();
     }
 
     /**
@@ -70,7 +75,7 @@ class PolrApi
     {
         $response = $this->callAPIEndpoint(
             self::ENDPOINT_ACTION_SHORTEN,
-            $this->serializer->serialize($link, 'json')
+            $this->serializer->serialize($link, 'json', ['groups' => 'Default'])
         );
 
         $responseLink = new DTO\Response\Link();
@@ -90,7 +95,7 @@ class PolrApi
     {
         $response = $this->callAPIEndpoint(
             self::ENDPOINT_ACTION_SHORTEN_BULK,
-            ['data' => $this->serializer->serialize(['links' => $links], 'json')]
+            ['data' => $this->serializer->serialize(['links' => $links], 'json', ['groups' => 'Default'])]
         );
 
         $result = $response->getJsonData('result', 'shortened_links');
@@ -99,13 +104,19 @@ class PolrApi
             $result = '[]';
         }
 
-        return $this->serializer->deserialize($result, 'array<' . DTO\Response\Link::class . '>', 'json');
+        $links = [];
+
+        foreach ($result as $link) {
+            $links[] = $this->serializer->deserialize($link, DTO\Response\Link::class, 'json');
+        }
+
+        return $links;
     }
 
     /**
      * Looks up link with provided URL ending and URL key
      * @param string $urlEnding the URL ending
-     * @param string $urlKey URL key for secret URL - ignored if not secret URL
+     * @param string|null $urlKey URL key for secret URL - ignored if not secret URL
      * @return DTO\Response\Link
      * @throws ApiResponseException
      */
@@ -195,5 +206,20 @@ class PolrApi
     private function handleErrorResponse(DTO\Response\Response $response)
     {
         throw new ApiResponseException($response->getMessage(), $response->getCode(), $response->getErrorCode());
+    }
+
+    /**
+     * Initializes Symfony serializer with custom normalizer
+     */
+    private function initSerializer()
+    {
+        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
+        $metadataAwareNameConverter = new MetadataAwareNameConverter($classMetadataFactory);
+        $encoders = [new JsonEncoder()];
+        $normalizers = [
+            new PolrNormalizer($classMetadataFactory, $metadataAwareNameConverter)
+        ];
+
+        $this->serializer = new Serializer($normalizers, $encoders);
     }
 }

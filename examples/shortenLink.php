@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Usage:
+ * POLR_API_URL=http://polr-api.test POLR_API_KEY=polr-api-key-test POLR_API_QUOTA=60 php shortenLink.php
+ */
 use Adeelnawaz\PolrApiClient\DTO;
 use Adeelnawaz\PolrApiClient\Exception\ApiResponseException;
 

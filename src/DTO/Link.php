@@ -2,29 +2,31 @@
 
 namespace Adeelnawaz\PolrApiClient\DTO;
 
-
-use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 class Link
 {
     /**
      * The URL to shorten
      * @var string
-     * @Serializer\Type("string")
+     * @Groups("Default")
      */
     protected $url;
 
     /**
      * Whether the URL should be a secret URL or not. Defaults to false
      * @var bool
-     * @Serializer\Type("bool")
+     * @Groups("Default")
+     * @SerializedName("is_secret")
      */
     protected $isSecret = false;
 
     /**
      * A custom ending for the short URL. If left empty, no custom ending will be assigned
      * @var string
-     * @Serializer\Type("string")
+     * @Groups("Default")
+     * @SerializedName("custom_ending")
      */
     protected $customEnding;
 

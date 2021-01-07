@@ -23,7 +23,6 @@ of the object, the following have to be provided:
 - the URL to the API
 - the secret key of the user
 - the quota of the user
-- JMS serializer object
 
 After instantiating the API, create DTO object(s) (`DTO\Link`, etc) for the method you
 intend to use and call the method. This will result in calling the respective REST API
@@ -40,23 +39,11 @@ Example:
 // Register composer spl autoload
 $autoloader = require __DIR__ . '/../vendor/autoload.php';
 
-// Register doctrine annotation autoload for JMS to work properly
-\Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($autoloader, "loadClass"));
-
-// Build JMS Serializer
-$serializer = \JMS\Serializer\SerializerBuilder::create()
-    // Note: in order to use lookupLink API, this subscriber must be added
-    ->configureListeners(function (JMS\Serializer\EventDispatcher\EventDispatcher $dispatcher) {
-        $dispatcher->addSubscriber(new \Adeelnawaz\PolrApiClient\EventSubscriber\LinkDeserealizeSubscriber());
-    })
-    ->build();
-
 // Instantiate PolrApi object
 $api = new \Adeelnawaz\PolrApiClient\PolrApi(
     "POLR_API_URL",
     "POLR_API_KEY",
-    "POLR_API_QUOTA",
-    $serializer
+    "POLR_API_QUOTA"
 );
 
 // Prepare DTO for API method input
