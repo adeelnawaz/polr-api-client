@@ -183,7 +183,7 @@ class PolrApi
             $idleMicrosec = 1000000 * (self::$lastCallTime + $this->timeDelay - microtime(true));
 
             if ($idleMicrosec > 0) {
-                usleep($idleMicrosec);
+                usleep((int)$idleMicrosec);
             }
         }
 

@@ -61,7 +61,6 @@ class Link
 
     /**
      * @return string
-     * @Serializer\Type("string")
      */
     public function getShortUrl()
     {
